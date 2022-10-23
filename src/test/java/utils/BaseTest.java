@@ -27,15 +27,15 @@ public class BaseTest {
 
         webdriver = new ChromeDriver();
         webdriver.get(Links.HOMEPAGE);
+    }
 
+    public static WebDriver getWebdriver() {
+        return webdriver;
     }
 
     @AfterClass
     public static void closeBrowser() {
         webdriver.quit();
-
     }
-
-
 
 }

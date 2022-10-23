@@ -8,10 +8,7 @@ public class FirstTest extends BaseTest {
 
     public void homePageTest() {
 
-        homePage = new BasePage();
-
-
-
+        homePage = new BasePage(getWebdriver());
 
 
     }
