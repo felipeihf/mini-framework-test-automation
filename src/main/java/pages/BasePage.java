@@ -23,20 +23,30 @@ public class BasePage {
     @FindBy(xpath = "//div[contains(@class, \"truncate\")]/child::div[1]//strong")
     private WebElement inputResult;
 
-    // luego de esto se haria un scroll
+    @FindBy(id="d1-btn")
+    private WebElement setDates;
+
+    // flecha para adelantar meses
+    // botones de fecha ida y vuelta
+
+    @FindBy(xpath="//button[@data-stid='apply-date-picker']")
+    private WebElement doneButton;
+
+
+
+
+
+
+
+    @FindBy(id="d2-btn")
+    private WebElement setSecondDate;
+
+
+
     // hacer un locator del boton de la fecha seleccionada para hacerle click
     // lo mismo para la segunda fecha
     // locator para el boton de "Done"
     // locator para search button
-
-    // crear nueva pagina con resultados de vuelos, dentro de esta hacer lo siguiente:
-
-    // localizar caja de filter by y validar su visibilidad con los contenidos minimos: price, departure, arrival y duration
-    // localizar select buttons y validar presencia en dom
-    // localizar textos de duraciones de viaje y validar presencias
-    // localizar boton de detalles y precios de equipaje, validar que aparecen en todos los resultados
-
-
 
 
     public BasePage(WebDriver webDriver) {
