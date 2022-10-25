@@ -1,10 +1,13 @@
 package pages;
 
 
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class BasePage {
 
@@ -26,40 +29,42 @@ public class BasePage {
     @FindBy(id="d1-btn")
     private WebElement setDates;
 
-    // flecha para adelantar meses
-    // botones de fecha ida y vuelta
+    @FindBy(xpath="//button[@data-stid='date-picker-paging']")
+    private WebElement changeMonthButton;
+
+    @FindBy(xpath = "//button[@data-day='15']")
+    private WebElement departureDate;
+
+    @FindBy(xpath = "//button[@data-day='16']")
+    private WebElement arrivalDate;
 
     @FindBy(xpath="//button[@data-stid='apply-date-picker']")
     private WebElement doneButton;
 
 
-
-
-
-
-
-    @FindBy(id="d2-btn")
-    private WebElement setSecondDate;
-
-
-
-    // hacer un locator del boton de la fecha seleccionada para hacerle click
-    // lo mismo para la segunda fecha
-    // locator para el boton de "Done"
-    // locator para search button
-
-
     public BasePage(WebDriver webDriver) {
-
-
 
         this.webDriver = webDriver;
         PageFactory.initElements(webDriver, this);
 
+        }
+    public String getPageURL() {
 
+        String getURL = webDriver.getCurrentUrl();
+
+        return getURL; }
+
+
+    public void bookFlight() {
+
+        try {
+            new WebDriverWait(webDriver, 10).until(ExpectedConditions.elementToBeClickable(flightButton));
+            System.out.println("Element is clickable");
+        }
+        catch(TimeoutException e) {
+            System.out.println("Element isn't clickable");
+        }
 
     }
-
-
 
 }
