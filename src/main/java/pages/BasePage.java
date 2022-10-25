@@ -1,6 +1,7 @@
 package pages;
 
 
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -16,15 +17,20 @@ public class BasePage {
 
     @FindBy(xpath = "//span[text()='Flights']")
     private WebElement flightButton;
+    @FindBy(xpath = "//button[@data-stid='location-field-leg1-origin-menu-trigger']")
+    private WebElement leavingFromButton;
 
-    @FindBy(xpath = "//div[text()='Leaving from']")
+    @FindBy(id="location-field-leg1-origin-menu-input")
     private WebElement leavingFromInput;
-
-    @FindBy(xpath = "//div[text()='Going to']")
-    private WebElement goingToInput;
 
     @FindBy(xpath = "//div[contains(@class, \"truncate\")]/child::div[1]//strong")
     private WebElement inputResult;
+
+    @FindBy(xpath = "//button[@data-stid='location-field-leg1-destination-menu-trigger']")
+    private WebElement goingToBar;
+
+    @FindBy(id="location-field-leg1-destination-menu-input")
+    private WebElement goingToInput;
 
     @FindBy(id="d1-btn")
     private WebElement setDates;
@@ -57,13 +63,33 @@ public class BasePage {
 
     public void bookFlight() {
 
+        WebDriverWait wait = new WebDriverWait(webDriver,15);
+
+        new WebDriverWait(webDriver, 10).until(ExpectedConditions.elementToBeClickable(flightButton));
+        flightButton.click();
+
         try {
-            new WebDriverWait(webDriver, 10).until(ExpectedConditions.elementToBeClickable(flightButton));
-            System.out.println("Element is clickable");
+            leavingFromButton.click();
+            new WebDriverWait(webDriver, 15).until(ExpectedConditions.elementToBeClickable(leavingFromInput));
+            leavingFromInput.clear();
+            leavingFromInput.click();
+            leavingFromInput.sendKeys("LAS", Keys.ENTER);
+
+            //TODO: solve sendkeys not doing input on the searchbar
+
+            // goingToBar.click();
+            // new WebDriverWait(webDriver, 15).until(ExpectedConditions.elementToBeClickable(goingToInput));
+            // leavingFromInput.sendKeys("LAX", Keys.ENTER);
+
+
         }
         catch(TimeoutException e) {
             System.out.println("Element isn't clickable");
         }
+
+
+
+
 
     }
 
