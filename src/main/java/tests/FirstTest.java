@@ -3,6 +3,7 @@ package tests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.BasePage;
+import static utils.Links.*;
 
 public class FirstTest extends BaseTest {
 
@@ -14,9 +15,8 @@ public class FirstTest extends BaseTest {
         BaseTest.homePage.bookFlight();
 
         String currentURL = homePage.getPageURL();
-        String bookFlightURL = "https://www.travelocity.com/Flights-Search";
 
-        Assert.assertTrue(currentURL.contains(bookFlightURL));
+        Assert.assertTrue(currentURL.contains(BOOKING_PAGE));
 
 
 
