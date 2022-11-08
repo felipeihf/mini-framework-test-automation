@@ -1,7 +1,10 @@
 package tests;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.BasePage;
+
+import static utils.Links.BOOKING_PAGE;
 
 public class FirstTest extends BaseTest {
 
@@ -13,9 +16,8 @@ public class FirstTest extends BaseTest {
         getWebdriver().manage().window().maximize();
         BaseTest.homePage.bookFlight();
 
-        // String currentURL = homePage.getPageURL();
-
-        // Assert.assertTrue(currentURL.contains(BOOKING_PAGE));
+        String currentURL = homePage.getPageURL();
+        Assert.assertTrue(currentURL.contains(BOOKING_PAGE));
 
 
 

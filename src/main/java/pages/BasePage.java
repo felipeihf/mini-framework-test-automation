@@ -1,10 +1,7 @@
 package pages;
 
 
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -14,83 +11,92 @@ public class BasePage {
 
 
     protected WebDriver webDriver;
+    private WebDriverWait wait;
 
     @FindBy(xpath = "//span[text()='Flights']")
     private WebElement flightButton;
-    @FindBy(xpath = "//button[@data-stid='location-field-leg1-origin-menu-trigger']")
-    private WebElement leavingFromButton;
 
-    @FindBy(id="location-field-leg1-origin-menu-input")
+    @FindBy(xpath="//*[@data-testid=\"location-field-leg1-origin-container\"]")
+    private WebElement leavingButton;
+
+    @FindBy(xpath="//*[@id=\"location-field-leg1-origin\" and @placeholder=\"Where are you leaving from?\"]")
     private WebElement leavingFromInput;
 
-    @FindBy(xpath = "//div[contains(@class, \"truncate\")]/child::div[1]//strong")
-    private WebElement inputResult;
+    @FindBy(xpath="//*[@data-testid=\"location-field-leg1-destination-container\"]")
+    private WebElement destinationButton;
 
-    @FindBy(xpath = "//button[@data-stid='location-field-leg1-destination-menu-trigger']")
-    private WebElement goingToBar;
-
-    @FindBy(id="location-field-leg1-destination-menu-input")
-    private WebElement goingToInput;
+    @FindBy(xpath="//*[@id=\"location-field-leg1-destination\" and @placeholder=\"Where are you going to?\"]")
+    private WebElement destinationInput;
 
     @FindBy(id="d1-btn")
-    private WebElement setDates;
+    private WebElement departureDateBtn;
 
-    @FindBy(xpath="//button[@data-stid='date-picker-paging']")
-    private WebElement changeMonthButton;
+    @FindBy(id="d2-btn")
+    private WebElement returnDateBtn;
 
-    @FindBy(xpath = "//button[@data-day='15']")
+    @FindBy(xpath = "//*[@data-stid='date-picker-paging'][2]")
+    private WebElement nextMonthBtn;
+
+    @FindBy(xpath = "//button[@aria-label='Jan 13, 2023']")
     private WebElement departureDate;
 
-    @FindBy(xpath = "//button[@data-day='16']")
-    private WebElement arrivalDate;
-
     @FindBy(xpath="//button[@data-stid='apply-date-picker']")
-    private WebElement doneButton;
+    private WebElement confirmDatesBtn;
+
+    @FindBy(xpath="//button[@data-testid='submit-button']")
+    private WebElement submitBtn;
 
 
     public BasePage(WebDriver webDriver) {
 
         this.webDriver = webDriver;
         PageFactory.initElements(webDriver, this);
-
+        wait = new WebDriverWait(webDriver, 15);
         }
+
+
     public String getPageURL() {
 
         String getURL = webDriver.getCurrentUrl();
+        return getURL;
+    }
 
-        return getURL; }
+    public void verifyResultPage() {
 
+    }
 
+    /** This test only works in a full-screen desktop browser **/
     public void bookFlight() {
 
-        WebDriverWait wait = new WebDriverWait(webDriver,15);
-
-        new WebDriverWait(webDriver, 10).until(ExpectedConditions.elementToBeClickable(flightButton));
+        /** Set origin **/
         flightButton.click();
+        leavingButton.click();
+        wait.until(ExpectedConditions.elementToBeClickable(leavingFromInput));
+        leavingFromInput.sendKeys("LAS");
+        leavingFromInput.sendKeys(Keys.ENTER);
+        wait.until(ExpectedConditions.elementToBeClickable(destinationButton));
 
-        try {
-            leavingFromButton.click();
-            new WebDriverWait(webDriver, 15).until(ExpectedConditions.elementToBeClickable(leavingFromInput));
-            leavingFromInput.clear();
-            leavingFromInput.click();
-            leavingFromInput.sendKeys("LAS", Keys.ENTER);
+        /** Set destination **/
 
-            //TODO: solve sendkeys not doing input on the searchbar
+        destinationButton.click();
+        wait.until(ExpectedConditions.elementToBeClickable(destinationInput));
+        destinationInput.sendKeys("LAX");
+        destinationInput.sendKeys(Keys.ENTER);
 
-            // goingToBar.click();
-            // new WebDriverWait(webDriver, 15).until(ExpectedConditions.elementToBeClickable(goingToInput));
-            // leavingFromInput.sendKeys("LAX", Keys.ENTER);
+        /** Set departure date **/
+        departureDateBtn.click();
+        wait.until(ExpectedConditions.elementToBeClickable(nextMonthBtn));
+        nextMonthBtn.click();
+        departureDate.click();
+        confirmDatesBtn.click();
+        submitBtn.click();
 
 
         }
-        catch(TimeoutException e) {
-            System.out.println("Element isn't clickable");
-        }
-
 
 
 
 
     }
 
-}
+
